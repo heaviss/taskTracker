@@ -25,16 +25,12 @@ from taggit.managers import TaggableManager
 
 class Board(models.Model):
     name = models.CharField(max_length=200)
-    lists = models.ManyToManyField(List)
     background = models.ImageField()
 
 class List(models.Model):
     name = models.CharField(max_length=200)
-    parent_board = models.ForeignKey(Board)
+    parent_board = models.ForeignKey(Board, related_name='lists', related_query_name='list')
     position = None #todo
-    projects = models.ManyToManyField(Project)
-    tasks = models.ManyToManyField(Task)
-    subtasks = models.ManyToManyField(Subtask)
 
 class AbstractTask(models.Model):
     STATUSES = (
@@ -56,24 +52,24 @@ class AbstractTask(models.Model):
 
 
 class Project(AbstractTask):
-    parent_list = models.ForeignKey(List)
-    attachments = models.ManyToManyField(Attachment)
+    owner_list = models.ForeignKey(List, related_name='projects', related_query_name="project")
     tags = TaggableManager()
-    tasks = models.ManyToManyField(Task)
     #comments = models.ManyToManyField(Comment)
     #check_lists
 
 
 class Task(AbstractTask):
-    parent_project = models.ForeignKey(Project)
-    #todo - repeat_period
-    attachments = models.ManyToManyField(Attachment)
+    parent_project = models.ForeignKey(Project, related_name='tasks', related_query_name="task")
+    owner_list = models.ForeignKey(List, related_name='tasks', related_query_name="task")
     tags = TaggableManager()
+
+    #todo - repeat_period CommaSeparatedIntegerField ?
     #check_lists
 
 
 class Subtask(AbstractTask):
-    parent_task = models.ForeignKey(Task)
+    parent_task = models.ForeignKey(Task, related_name='subtasks', related_query_name="subtask")
+    owner_list = models.ForeignKey(List, related_name='subtasks', related_query_name="subtask")
     check_list = TaggableManager()
 
 
@@ -84,5 +80,7 @@ class Comment(models.Model):
     text = models.TextField()
 
 class Attachment(models.Model):
+    project = models.ForeignKey(Project, related_name='attachments', related_query_name="attachment")
+    task = models.ForeignKey(Task, related_name='attachments', related_query_name="attachment")
     name = models.CharField(max_length=100)
     file = models.FileField(upload_to='attachments')
