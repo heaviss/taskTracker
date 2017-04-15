@@ -27,10 +27,16 @@ class Board(models.Model):
     name = models.CharField(max_length=200)
     background = models.ImageField()
 
+    def __str__(self):
+        return self.name
+
 class List(models.Model):
     name = models.CharField(max_length=200)
     parent_board = models.ForeignKey(Board, related_name='lists', related_query_name='list')
     position = None #todo
+
+    def __str__(self):
+        return self.name
 
 class AbstractTask(models.Model):
     STATUSES = (
@@ -46,6 +52,9 @@ class AbstractTask(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
     arch_date = models.DateField(default=None)
     last_change_date = models.DateField(auto_now=True)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         abstract = True
@@ -79,8 +88,14 @@ class Comment(models.Model):
     source = None
     text = models.TextField()
 
+    def __str__(self):
+        return self.text
+
 class Attachment(models.Model):
     project = models.ForeignKey(Project, related_name='attachments', related_query_name="attachment")
     task = models.ForeignKey(Task, related_name='attachments', related_query_name="attachment")
     name = models.CharField(max_length=100)
     file = models.FileField(upload_to='attachments')
+
+    def __str__(self):
+        return self.name
