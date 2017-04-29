@@ -2,33 +2,34 @@
 # from django.contrib.auth.models import User, Group
 
 from rest_framework import viewsets
-from tracker.models import Board, List, Project, Task, Subtask
-from tracker.serializers import BoardSerializer, \
-    ListSerializer, \
-    ProjectSerializer, \
-    TaskSerializer
+from tracker.models import Board, List, Project, Task, Subtask, Attachment
+import tracker.serializers as ts
 
 
 class BoardViewSet(viewsets.ModelViewSet):
     queryset = Board.objects.all().order_by('name')
-    serializer_class = BoardSerializer
+    serializer_class = ts.BoardSerializer
 
 
 class ListViewSet(viewsets.ModelViewSet):
     queryset = List.objects.all().order_by('name')
-    serializer_class = ListSerializer
+    serializer_class = ts.ListSerializer
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
-    serializer_class = ProjectSerializer
+    serializer_class = ts.ProjectSerializer
 
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
-    serializer_class = TaskSerializer
+    serializer_class = ts.TaskSerializer
 
 
 class SubtaskViewSet(viewsets.ModelViewSet):
     queryset = Subtask.objects.all()
-    serializer_class = Subtask
+    serializer_class = ts.SubtaskSerializer
+
+class AttachmentViewSet(viewsets.ModelViewSet):
+    queryset = Attachment.objects.all()
+    serializer_class = ts.AttachmentSerializer
