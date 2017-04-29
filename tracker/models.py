@@ -26,7 +26,7 @@ from taggit.managers import TaggableManager
 
 class Board(models.Model):
     name = models.CharField(max_length=200)
-    background = None #todo models.ImageField()
+    background = None  # todo models.ImageField()
 
     def __str__(self):
         return self.name
@@ -53,18 +53,17 @@ class AbstractTask(models.Model):
     status = models.CharField(max_length=1, choices=STATUSES)
 
     creation_date = models.DateTimeField(auto_now_add=True)
-    arch_date = models.DateField(default=None)
+    arch_date = models.DateField(null=True, default=None)
     last_change_date = models.DateField(auto_now=True)
 
     def __str__(self):
         return self.name
 
     def set_status(self, status):
-        if str.capitalize(status) in ['A', 'Active', 'D', 'Done', 'P', 'Pause','C', 'Cancelled']:
+        if str.capitalize(status) in ['A', 'Active', 'D', 'Done', 'P', 'Pause', 'C', 'Cancelled']:
             self.status = str.capitalize(status[0])
         else:
             return "Tried to set incorrect status: %s" % status
-
 
     class Meta:
         abstract = True
@@ -72,15 +71,15 @@ class AbstractTask(models.Model):
 
 class Project(AbstractTask):
     owner_list = models.ForeignKey(List, related_name='projects', related_query_name="project")
-    tags = TaggableManager()
+    # tags = TaggableManager()
     # comments = models.ManyToManyField(Comment)
     # check_lists
 
 
 class Task(AbstractTask):
-    parent_project = models.ForeignKey(Project, related_name='tasks', related_query_name="task")
+    parent_project = models.ForeignKey(Project, related_name='tasks', related_query_name="task", blank=True)
     owner_list = models.ForeignKey(List, related_name='tasks', related_query_name="task")
-    tags = TaggableManager()
+    # tags = TaggableManager()
 
     # todo - repeat_period CommaSeparatedIntegerField ?
     # check_lists

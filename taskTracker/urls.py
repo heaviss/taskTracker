@@ -22,11 +22,11 @@ from tracker import views
 router = routers.DefaultRouter()
 router.register(r'boards', views.BoardViewSet)
 router.register(r'lists', views.ListViewSet)
-router.register('projects/', views.ProjectViewSet)
-router.register('tasks/', views.TaskViewSet)
-router.register('subtasks/', views.SubtaskViewSet)
-router.register('attachments/', views.AttachmentViewSet)
-router.register('comments/', views.CommentViewSet)
+router.register('projects', views.ProjectViewSet)
+router.register('tasks', views.TaskViewSet)
+router.register('subtasks', views.SubtaskViewSet)
+router.register('attachments', views.AttachmentViewSet)
+router.register('comments', views.CommentViewSet)
 
 
 # Wire up our API using automatic URL routing.
