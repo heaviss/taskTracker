@@ -21,6 +21,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     serializer_class = ts.ProjectSerializer
 
 
+
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = ts.TaskSerializer

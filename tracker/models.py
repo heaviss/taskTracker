@@ -1,7 +1,11 @@
 from django.db import models
-# from django.utils import timezone
+from django.utils import timezone
 
 from taggit.managers import TaggableManager
+
+from django.db.models.signals import pre_save, post_init
+from django.dispatch import receiver
+
 
 '''
 1.Доска. У неё будут заголовок, листы, фоновый рисунок:)
@@ -50,10 +54,10 @@ class AbstractTask(models.Model):
     )
     name = models.CharField(max_length=200)
     description = models.TextField()
-    status = models.CharField(max_length=1, choices=STATUSES)
+    status = models.CharField(max_length=1, choices=STATUSES, default='A')
 
-    creation_date = models.DateTimeField(auto_now_add=True)
-    arch_date = models.DateField(null=True, default=None)
+    creation_date = models.DateTimeField(auto_now_add=True, editable=False)
+    arch_date = models.DateTimeField(null=True, default=None, editable=False)
     last_change_date = models.DateField(auto_now=True)
 
     def __str__(self):
@@ -94,7 +98,7 @@ class Subtask(AbstractTask):
 class Comment(models.Model):
     parent_project = models.ForeignKey(Project, related_name='comments', related_query_name='comment')
     author = models.CharField(max_length=200)
-    creation_date = models.DateTimeField(auto_now_add=True)
+    creation_date = models.DateTimeField(auto_now_add=True, editable=False)
     source = None
     text = models.TextField()
 
@@ -110,3 +114,18 @@ class Attachment(models.Model):
 
     def __str__(self):
         return self.name
+
+
+
+@receiver(post_init)
+def post_init_listener(sender, instance):
+    if issubclass(sender, AbstractTask):
+        instance._initial_status = instance.status
+
+
+@receiver(pre_save)
+def pre_save_listener(sender, instance):
+    if issubclass(sender, AbstractTask):
+        if instance._initial_status != instance.status and \
+                        instance.status in ('D', 'C'):
+            instance.arch_date = timezone.now()
