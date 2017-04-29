@@ -20,13 +20,19 @@ from rest_framework import routers
 from tracker import views
 
 router = routers.DefaultRouter()
-router.register(r'board', views.BoardViewSet)
-router.register(r'list', views.ListViewSet)
+router.register(r'boards', views.BoardViewSet)
+router.register(r'lists', views.ListViewSet)
+router.register('projects/', views.ProjectViewSet)
+router.register('tasks/', views.TaskViewSet)
+router.register('subtasks/', views.SubtaskViewSet)
+router.register('attachments/', views.AttachmentViewSet)
+router.register('comments/', views.CommentViewSet)
+
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include(router.urls)),
+    url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
