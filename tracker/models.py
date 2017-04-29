@@ -63,11 +63,6 @@ class AbstractTask(models.Model):
     def __str__(self):
         return self.name
 
-    def set_status(self, status):
-        if str.capitalize(status) in ['A', 'Active', 'D', 'Done', 'P', 'Pause', 'C', 'Cancelled']:
-            self.status = str.capitalize(status[0])
-        else:
-            return "Tried to set incorrect status: %s" % status
 
     class Meta:
         abstract = True
@@ -81,7 +76,7 @@ class Project(AbstractTask):
 
 
 class Task(AbstractTask):
-    parent_project = models.ForeignKey(Project, related_name='tasks', related_query_name="task", blank=True)
+    parent_project = models.ForeignKey(Project, related_name='tasks', related_query_name="task", null=True)
     owner_list = models.ForeignKey(List, related_name='tasks', related_query_name="task")
     # tags = TaggableManager()
 
