@@ -1,5 +1,5 @@
 from django.db import models
-#from django.utils import timezone
+# from django.utils import timezone
 
 from taggit.managers import TaggableManager
 
@@ -23,20 +23,23 @@ from taggit.managers import TaggableManager
 5. Вложение: имя, ссылка на файл
 '''
 
+
 class Board(models.Model):
     name = models.CharField(max_length=200)
-    background = models.ImageField()
+    background = None #todo models.ImageField()
 
     def __str__(self):
         return self.name
+
 
 class List(models.Model):
     name = models.CharField(max_length=200)
     parent_board = models.ForeignKey(Board, related_name='lists', related_query_name='list')
-    position = None #todo
+    position = None
 
     def __str__(self):
         return self.name
+
 
 class AbstractTask(models.Model):
     STATUSES = (
@@ -56,6 +59,13 @@ class AbstractTask(models.Model):
     def __str__(self):
         return self.name
 
+    def set_status(self, status):
+        if str.capitalize(status) in ['A', 'Active', 'D', 'Done', 'P', 'Pause','C', 'Cancelled']:
+            self.status = status[0]
+        else:
+            return "Try to set incorrect status: %s" % status
+
+
     class Meta:
         abstract = True
 
@@ -63,8 +73,8 @@ class AbstractTask(models.Model):
 class Project(AbstractTask):
     owner_list = models.ForeignKey(List, related_name='projects', related_query_name="project")
     tags = TaggableManager()
-    #comments = models.ManyToManyField(Comment)
-    #check_lists
+    # comments = models.ManyToManyField(Comment)
+    # check_lists
 
 
 class Task(AbstractTask):
@@ -72,8 +82,8 @@ class Task(AbstractTask):
     owner_list = models.ForeignKey(List, related_name='tasks', related_query_name="task")
     tags = TaggableManager()
 
-    #todo - repeat_period CommaSeparatedIntegerField ?
-    #check_lists
+    # todo - repeat_period CommaSeparatedIntegerField ?
+    # check_lists
 
 
 class Subtask(AbstractTask):
@@ -83,6 +93,7 @@ class Subtask(AbstractTask):
 
 
 class Comment(models.Model):
+    parent_project = models.ForeignKey(Project, related_name='comments', related_query_name='comment')
     author = models.CharField(max_length=200)
     creation_date = models.DateTimeField(auto_now_add=True)
     source = None
@@ -90,6 +101,7 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text
+
 
 class Attachment(models.Model):
     project = models.ForeignKey(Project, related_name='attachments', related_query_name="attachment")
