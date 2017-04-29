@@ -116,16 +116,17 @@ class Attachment(models.Model):
         return self.name
 
 
-
 @receiver(post_init)
-def post_init_listener(sender, instance):
+def task_post_init_listener(sender, instance, **kwargs):
     if issubclass(sender, AbstractTask):
         instance._initial_status = instance.status
 
 
 @receiver(pre_save)
-def pre_save_listener(sender, instance):
+def task_pre_save_listener(sender, instance, **kwargs):
     if issubclass(sender, AbstractTask):
-        if instance._initial_status != instance.status and \
-                        instance.status in ('D', 'C'):
-            instance.arch_date = timezone.now()
+        if instance._initial_status != instance.status:
+            if instance.status in ('D', 'C'):
+                instance.arch_date = timezone.now()
+            else:
+                instance.arch_date = None

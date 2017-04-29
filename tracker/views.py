@@ -21,7 +21,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
     serializer_class = ts.ProjectSerializer
 
 
-
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = ts.TaskSerializer
@@ -31,9 +30,11 @@ class SubtaskViewSet(viewsets.ModelViewSet):
     queryset = Subtask.objects.all()
     serializer_class = ts.SubtaskSerializer
 
+
 class AttachmentViewSet(viewsets.ModelViewSet):
     queryset = Attachment.objects.all()
     serializer_class = ts.AttachmentSerializer
+
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
