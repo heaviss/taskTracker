@@ -61,9 +61,9 @@ class AbstractTask(models.Model):
 
     def set_status(self, status):
         if str.capitalize(status) in ['A', 'Active', 'D', 'Done', 'P', 'Pause','C', 'Cancelled']:
-            self.status = status[0]
+            self.status = str.capitalize(status[0])
         else:
-            return "Try to set incorrect status: %s" % status
+            return "Tried to set incorrect status: %s" % status
 
 
     class Meta:

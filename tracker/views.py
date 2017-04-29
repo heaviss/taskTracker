@@ -2,7 +2,7 @@
 # from django.contrib.auth.models import User, Group
 
 from rest_framework import viewsets
-from tracker.models import Board, List, Project, Task, Subtask, Attachment
+from tracker.models import Board, List, Project, Task, Subtask, Attachment, Comment
 import tracker.serializers as ts
 
 
@@ -33,3 +33,7 @@ class SubtaskViewSet(viewsets.ModelViewSet):
 class AttachmentViewSet(viewsets.ModelViewSet):
     queryset = Attachment.objects.all()
     serializer_class = ts.AttachmentSerializer
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = ts.CommentSerializer
