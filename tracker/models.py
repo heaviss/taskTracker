@@ -53,7 +53,7 @@ class AbstractTask(models.Model):
         ('C', 'Cancelled')
     )
     name = models.CharField(max_length=200)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     status = models.CharField(max_length=1, choices=STATUSES, default='A')
 
     creation_date = models.DateTimeField(auto_now_add=True, editable=False)

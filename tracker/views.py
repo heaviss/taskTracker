@@ -12,7 +12,7 @@ class BoardViewSet(viewsets.ModelViewSet):
 
 
 class ListViewSet(viewsets.ModelViewSet):
-    queryset = List.objects.all().order_by('name')
+    queryset = List.objects.all()
     serializer_class = ts.ListSerializer
 
 
