@@ -13,7 +13,7 @@
         </form>
       </div>
     </div>
-    <footer>made by heavis</footer>
+    <footer>Сделал Вова Серёгин. <a href="https://github.com/heaviss/taskTracker">Репозиторий на гитхабе</a></footer>
   </div>
 </template>
 
@@ -110,5 +110,6 @@ export default {
     flex: 0 0 auto;
     background-color: #bc8dd8;
     margin-top: 1em;
+    font-size: 0.9em;
   }
 </style>
