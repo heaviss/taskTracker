@@ -3,7 +3,7 @@
     <header >
       <h3>{{board.name}}</h3>
     </header>
-    
+
     <div class="row">
       <List v-for="list in board.lists" :url="list" :key="list.url"></List>
       <div class="col-md-4">
@@ -40,7 +40,7 @@ export default {
         })
     },
     addNewList: function (txt) {
-        alert("addNewList called. Implement it!")
+        alert("addNewList called. Implement it!");
         txt.preventDefault();
     }
   },
@@ -68,8 +68,8 @@ export default {
 
   .row .col-md-5, .col-md-4{
       border: 6px;
-      margin-right: 1em; 
-      margin-left: 1em; 
+      margin-right: 1em;
+      margin-left: 1em;
       flex-grow: 1;
   }
   .row .col-md-5{

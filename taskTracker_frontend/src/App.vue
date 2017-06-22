@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <Board url="http://127.0.0.1:8000/api/boards/1/"></Board>
+<!-- prod    <Board url="http://46.101.110.157:80/api/boards/1/"></Board> -->
   </div>
 </template>
 

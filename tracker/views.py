@@ -4,7 +4,12 @@
 from rest_framework import viewsets
 from tracker.models import Board, List, Project, Task, Subtask, Attachment, Comment
 import tracker.serializers as ts
+'''
+from django.template import loader
+from django.shortcuts import render
 
+def index(request):
+    return render(request, 'index.html')'''
 
 class BoardViewSet(viewsets.ModelViewSet):
     queryset = Board.objects.all().order_by('name')

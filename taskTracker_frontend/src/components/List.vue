@@ -46,7 +46,7 @@ export default {
   },
   methods:{
     addNewTask (txt) {
-      txt.preventDefault()
+      txt.preventDefault();
 
       if (this.newTaskName) {
         let newTask = {
@@ -57,20 +57,20 @@ export default {
           "owner_list": this.url,
           "subtasks": [],
           "attachments": []
-        }
-        //construct url for POST 
-        let url = this.url.slice(0, this.url.indexOf("api")+4)+"tasks/"
+        };
+        //construct url for POST
+        let url = this.url.slice(0, this.url.indexOf("api")+4)+"tasks/";
         this.$http.post(url,newTask)
           .then(responce => {
             if (~responce.status.toString().indexOf("20")) {
-              this.list.tasks.push(responce.body)
+              this.list.tasks.push(responce.body);
               //console.log(responce.status)
               this.newTaskName = ""
             }
             else {
               console.log(responce.body)
             }
-          })       
+          })
       }
     },
 
@@ -95,8 +95,8 @@ export default {
 
   filters: {
     capitalize: function (value) {
-      if (!value) return ''
-      value = value.toString()
+      if (!value) return '';
+      value = value.toString();
       return value.charAt(0).toUpperCase() + value.slice(1)
     }
   },
